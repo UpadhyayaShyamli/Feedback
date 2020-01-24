@@ -41,8 +41,12 @@ public class GroupService {
         		String groupcreating_date_time = sdf.format(date);
         		group.setCreatedOn(groupcreating_date_time);
                 //Instant instant=Instant.ofEpochMilli(new Date().getTime());
+        		try {
                 groupRepo.save(group);
                 cgObj.setStatus("Group Created");
+                }catch(Exception ex) {
+                	cgObj.setStatus(ex.getMessage());
+                }
                 cgObj.setAppId(appId);
                 cgObj.setGroupObj(group);
                 return cgObj;
