@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,14 +32,14 @@ public class FeedBackController {
 		int groupId=feedObj.getGroupId();
 		String email=user.getEmail();
 		Feedback feedback=feedObj.getFeedback();
-		return ResponseEntity.ok( feedService.saveFeedback(appId, groupId, email, feedback));
+		return ResponseEntity.ok(feedService.saveFeedback(appId, groupId, email, feedback));
 	}
 
 	@PostMapping("/showFeedback")
 	public ResponseEntity<?>showFeedback(@RequestBody FeedbackPayload feedObj,@CurrentUser UserPrincipal user){
 		//String email=feedObj.getUserNameorEmail();
 		String email=user.getEmail();
-		 int appId = feedObj.getAppId();
+		int appId = feedObj.getAppId();
 		if(user.isAdminRole()) {
 			if(feedService.showFeedbackForadmin(appId).isEmpty()) {
 				return ResponseEntity.ok("No Feedback found");
@@ -54,10 +55,18 @@ public class FeedBackController {
 	@PostMapping("/showFeedbackforAdmin")
 	public ResponseEntity<?>showFeedbackForAdmin(@RequestBody FeedbackPayload feedObj,@CurrentUser UserPrincipal user){
 		int appId = feedObj.getAppId();
-		 List<FeedbackData>listObj=null;
+		List<FeedbackData>listObj=null;
 		if(user.isAdminRole()) {
 			listObj=feedService.showFeedbackForadmin(appId);
 		}
 		return ResponseEntity.ok(listObj);
 	}
+	
+	@PostMapping("/saveFeedbackComent")
+	public ResponseEntity<?>saveFeedbackComent(@RequestParam("feedbackId") int feedbackId,
+			@RequestParam("coment") String coment)
+	{
+		return ResponseEntity.ok(feedService.savefeedbackComent(feedbackId, coment));
+	}
+	
 }

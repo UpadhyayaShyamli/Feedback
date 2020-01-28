@@ -14,6 +14,7 @@ import com.aroha.demo.model.Group;
 import com.aroha.demo.payload.CreateGroup;
 import com.aroha.demo.payload.GroupDataRequest;
 import com.aroha.demo.payload.GroupPayload;
+import com.aroha.demo.payload.UserGroupResponse;
 import com.aroha.demo.repository.GroupRepository;
 
 @Service
@@ -42,13 +43,13 @@ public class GroupService {
         		group.setCreatedOn(groupcreating_date_time);
                 //Instant instant=Instant.ofEpochMilli(new Date().getTime());
         		try {
-                groupRepo.save(group);
-                cgObj.setStatus("Group Created");
+	                groupRepo.save(group);
+	                cgObj.setStatus("Group Created");
+	                cgObj.setAppId(appId);
+	                cgObj.setGroupObj(group);
                 }catch(Exception ex) {
                 	cgObj.setStatus(ex.getMessage());
                 }
-                cgObj.setAppId(appId);
-                cgObj.setGroupObj(group);
                 return cgObj;
             } else {
             	cgObj.setStatus("Group " + group.getGroupName() + " already present");
@@ -93,6 +94,30 @@ public class GroupService {
     
     public List<GroupDataRequest> findGroup(long userId){
     	return groupRepo.showGroup(userId);
+    }
+    
+//    public int isUserExistsinGroup(int groupId) {
+//    	int userCount = groupRepo.checkUserExists(groupId);
+//    	return userCount;
+//    }
+    public UserGroupResponse checkuserExistsInGroup(int groupId)
+    {
+    	int userCount = groupRepo.checkUserExists(groupId);
+    	UserGroupResponse ugResponse = new UserGroupResponse();
+    	
+    	if(userCount==0)
+    	{
+    		ugResponse.setStatus(false);
+    		ugResponse.setStatusMessage("No User Exists");
+    	}
+    	
+    	else
+    	{
+    		ugResponse.setStatus(true);
+    		ugResponse.setStatusMessage("User Exists");
+    	}
+    	
+    	return ugResponse;
     }
   
 }

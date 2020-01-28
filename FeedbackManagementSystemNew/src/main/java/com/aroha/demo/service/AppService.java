@@ -27,9 +27,14 @@ public class AppService {
         Date date = new Date();
         String applicationcreating_date_time = sdf.format(date);
         app.setCreatedOn(applicationcreating_date_time);
+        try {
         appRepo.save(app);
         appObj.setStatus("Application saved");
         appObj.setData(app);
+        
+        }catch (Exception e) {
+        	appObj.setStatus(e.getMessage());
+		}
         return appObj;
     }
 

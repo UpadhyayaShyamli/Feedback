@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.aroha.demo.model.Group;
 import com.aroha.demo.payload.CreateGroup;
+import com.aroha.demo.payload.FeedbackPayload;
 import com.aroha.demo.payload.GroupDataRequest;
 import com.aroha.demo.service.GroupService;
 
@@ -42,5 +43,11 @@ public class GroupController {
         int appId = dataRequest.getAppId();
         System.out.println(appId);
         return ResponseEntity.ok(groupService.showGroupbyAppId(appId));
+    }
+    
+    @PostMapping("/checkUserExistsInGroup")
+    public ResponseEntity<?>checkUserEsistsInGroup(@RequestBody FeedbackPayload feedObj)
+    {
+    	return ResponseEntity.ok(groupService.checkuserExistsInGroup(feedObj.getGroupId()));
     }
 }

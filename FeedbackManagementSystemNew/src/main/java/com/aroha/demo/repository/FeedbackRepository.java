@@ -1,8 +1,6 @@
 package com.aroha.demo.repository;
 
-import com.aroha.demo.model.Application;
 import com.aroha.demo.model.Feedback;
-import com.aroha.demo.model.Users;
 import com.aroha.demo.payload.FeedbackPayload;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

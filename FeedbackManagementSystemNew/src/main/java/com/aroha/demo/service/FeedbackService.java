@@ -2,11 +2,14 @@ package com.aroha.demo.service;
 
 import com.aroha.demo.model.Application;
 import com.aroha.demo.model.Feedback;
+import com.aroha.demo.model.FeedbackComent;
 import com.aroha.demo.model.Group;
 import com.aroha.demo.model.Users;
+import com.aroha.demo.payload.FeedbackComentPayload;
 import com.aroha.demo.payload.FeedbackData;
 import com.aroha.demo.payload.FeedbackPayload;
 import com.aroha.demo.payload.GroupDataRequest;
+import com.aroha.demo.repository.FeedbackComentRepository;
 import com.aroha.demo.repository.FeedbackRepository;
 import com.aroha.demo.repository.UserRepository;
 
@@ -30,10 +33,11 @@ public class FeedbackService {
     @Autowired
     private GroupService groupService;
     @Autowired
-    private UserService userService;
-    
+    private UserService userService; 
     @Autowired
     private UserRepository userRepo;
+    @Autowired
+    private FeedbackComentRepository feedComentRepo;
 
     public FeedbackPayload saveFeedback(int appId, int groupId, String email, Feedback feedback) {
     	FeedbackPayload feedPayload = new FeedbackPayload();
@@ -63,6 +67,7 @@ public class FeedbackService {
         feedback.setToWhomFeedbackgiven(toWhomFeedbackgiven);
         groupObj.getFeed().add(feedback);
         appObj.getFeedbackObj().add(feedback);
+        try {
         feedRepo.save(feedback);
         feedPayload.setAppId(appId);
         feedPayload.setGroupId(groupId);
@@ -70,6 +75,9 @@ public class FeedbackService {
         feedPayload.setFeedbackGivenBy(feedback.getFeedbackGivenBy());
         feedPayload.setFeedbackinfo(feedback.getFeedbackinfo());
         feedPayload.setStatusMessage("Feedback Given successfully to-> "+groupObj.getGroupName());
+        }catch (Exception e) {
+        	 feedPayload.setStatusMessage(e.getMessage());
+		}
         return feedPayload;
     }
     
@@ -99,12 +107,12 @@ public class FeedbackService {
     public ArrayList<FeedbackData> showFeedbackForadmin(int appId) {
         List<Feedback> list = feedRepo.showFeedbackForAdmin(appId);
         ArrayList<FeedbackData> listObj = new ArrayList<>();
-        if(list.size()==0)
-        {
-        	FeedbackData feedback = new FeedbackData();
-        	feedback.setStatusMessage("No feedback Found");
-        	listObj.add(feedback);
-        }
+//        if(list.size()==0)
+//        {
+//        	FeedbackData feedback = new FeedbackData();
+//        	feedback.setStatusMessage("No feedback Found");
+//        	listObj.add(feedback);
+//        }
         Iterator<Feedback> itr = list.iterator();
         while (itr.hasNext()) {
             Feedback obj = itr.next();
@@ -116,6 +124,28 @@ public class FeedbackService {
             listObj.add(feedback);
         }
         return listObj;
+    }
+    
+    public FeedbackComentPayload savefeedbackComent(int feedbackId,String coment)
+    {
+    	Optional<Feedback> feed = feedRepo.findById(feedbackId);
+    	Feedback feedObj = feed.get();
+    	int feedId = feedObj.getId();
+    	FeedbackComent feedComent = new FeedbackComent();
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+		Date date = new Date();
+		String date_time = sdf.format(date);
+    	feedComent.setFeedbackId(feedId);
+    	feedComent.setComent(coment);
+    	feedComent.setDateAndTime(date_time);
+    	FeedbackComentPayload feedComentPayload = new FeedbackComentPayload();
+    	try {
+	    	feedComentRepo.save(feedComent);
+	    	feedComentPayload.setStatusMessage("coment saved");
+    	}catch (Exception e) {
+			feedComentPayload.setStatusMessage(e.getMessage());
+		}
+    	return feedComentPayload;
     }
     
 //    public ArrayList<feedbackData>showfeedbackforAdmin(int appId)
