@@ -5,6 +5,8 @@ public class FeedbackData {
 	private String feedbackSender;
 	private String dateAndtime;
 	private String statusMessage;
+	private String comment;
+    private String feedbackSenderName;
 	
 	public String getFeedback() {
 		return feedback;
@@ -29,5 +31,17 @@ public class FeedbackData {
 	}
 	public void setStatusMessage(String statusMessage) {
 		this.statusMessage = statusMessage;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public String getFeedbackSenderName() {
+		return feedbackSenderName;
+	}
+	public void setFeedbackSenderName(String feedbackSenderName) {
+		this.feedbackSenderName = feedbackSenderName;
 	}	
 }

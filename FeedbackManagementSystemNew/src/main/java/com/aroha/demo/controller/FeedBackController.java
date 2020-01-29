@@ -35,23 +35,23 @@ public class FeedBackController {
 		return ResponseEntity.ok(feedService.saveFeedback(appId, groupId, email, feedback));
 	}
 
-	@PostMapping("/showFeedback")
-	public ResponseEntity<?>showFeedback(@RequestBody FeedbackPayload feedObj,@CurrentUser UserPrincipal user){
-		//String email=feedObj.getUserNameorEmail();
-		String email=user.getEmail();
-		int appId = feedObj.getAppId();
-		if(user.isAdminRole()) {
-			if(feedService.showFeedbackForadmin(appId).isEmpty()) {
-				return ResponseEntity.ok("No Feedback found");
-			}
-			return ResponseEntity.ok(feedService.showFeedbackForadmin(appId));
-		}
-		if(feedService.showFeedback(email).isEmpty()) {
-			return ResponseEntity.ok("No Feedback found");
-		}
-		return ResponseEntity.ok(feedService.showFeedback(email));
-	}
-	
+	@PostMapping("/showFeedbackforUser")
+    public ResponseEntity<?> showFeedbackForUser(@RequestBody FeedbackPayload feedObj, @CurrentUser UserPrincipal user) {
+        //String email=feedObj.getUserNameorEmail();
+        String email = user.getEmail();
+        int appId = feedObj.getAppId();
+        if (user.isAdminRole()) {
+            if (feedService.showFeedbackForadmin(appId).isEmpty()) {
+                return ResponseEntity.ok("No Feedback found");
+            }
+            return ResponseEntity.ok(feedService.showFeedbackForadmin(appId));
+        }
+        if (feedService.showFeedbackforUser(email).isEmpty()) {
+            return ResponseEntity.ok("No Feedback found");
+        }
+        return ResponseEntity.ok(feedService.showFeedbackforUser(email));
+    }
+
 	@PostMapping("/showFeedbackforAdmin")
 	public ResponseEntity<?>showFeedbackForAdmin(@RequestBody FeedbackPayload feedObj,@CurrentUser UserPrincipal user){
 		int appId = feedObj.getAppId();
@@ -67,6 +67,12 @@ public class FeedBackController {
 			@RequestParam("coment") String coment)
 	{
 		return ResponseEntity.ok(feedService.savefeedbackComent(feedbackId, coment));
+	}
+	
+	@PostMapping("/showFeddback")
+	public ResponseEntity<?>showFeedback(@RequestBody FeedbackPayload feedObj,@CurrentUser UserPrincipal user)
+	{
+		return ResponseEntity.ok("hhhgb");
 	}
 	
 }

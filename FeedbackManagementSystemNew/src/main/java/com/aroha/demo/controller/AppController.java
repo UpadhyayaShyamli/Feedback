@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.aroha.demo.model.Application;
 import com.aroha.demo.payload.AppPayload;
+import com.aroha.demo.security.CurrentUser;
+import com.aroha.demo.security.UserPrincipal;
 import com.aroha.demo.service.AppService;
 
 @RestController
@@ -46,5 +48,12 @@ public class AppController {
             return ResponseEntity.ok("No Application found");
         }
         return ResponseEntity.ok(appService.getAllApp());
+    }
+    
+    @PostMapping("/getAppByUserId")
+    public ResponseEntity<?>getAppbyUserId(@CurrentUser UserPrincipal user)
+    {
+    	long userId = user.getId();
+    	return ResponseEntity.ok(appService.getUserApp(userId));
     }
 }

@@ -81,27 +81,35 @@ public class FeedbackService {
         return feedPayload;
     }
     
-    public List<FeedbackData> showFeedback(String email) {
-    	Users user=userService.findUsers(email);
-    	long userId=user.getUserId();
-    	System.out.println("User Id: "+userId);
-    	List<GroupDataRequest>groupObj=groupService.findGroup(userId);
-    	ArrayList<FeedbackData>list=new ArrayList<>();
-    	for(GroupDataRequest g:groupObj) {
-//    		System.out.println("GroupId is: "+g.getGroupId());
-    		List<FeedbackPayload>feedObj=feedRepo.showFeedback(g.getGroupId());
-    		Iterator<FeedbackPayload>itr=feedObj.iterator();
-    		while(itr.hasNext()) {
-    			FeedbackPayload obj=itr.next();
-    			System.out.println("------------"+obj.getCreatedOn());
-    			FeedbackData feedback=new FeedbackData();
-    			feedback.setFeedback(obj.getFeedbackinfo());
-    			feedback.setFeedbackSender(obj.getFeedbackGivenBy());
-    			feedback.setDateAndtime(obj.getCreatedOn());
-    			list.add(feedback);	
-    		}
-    	}
-    	return list;	
+    public List<FeedbackData> showFeedbackforUser(String email) {
+        Users user = userService.findUsers(email);
+        long userId = user.getUserId();
+        System.out.println("User Id: " + userId);
+        List<GroupDataRequest> groupObj = groupService.findGroup(userId);
+        FeedbackComent comment = new FeedbackComent();
+        ArrayList<FeedbackData> list = new ArrayList<>();
+        for (GroupDataRequest g : groupObj) {
+            //    		System.out.println("GroupId is: "+g.getGroupId());
+            List<FeedbackPayload> feedObj = feedRepo.showFeedback(g.getGroupId());
+            Iterator<FeedbackPayload> itr = feedObj.iterator();
+            while (itr.hasNext()) {
+                FeedbackPayload obj = itr.next();
+                System.out.println("--------Feedback Id:--------" + obj.getId());
+                FeedbackData feedback = new FeedbackData();
+                Optional<FeedbackComent> commentObj = feedComentRepo.findByfeedbackId(obj.getId());
+                if (commentObj.isPresent()) {
+                    FeedbackComent comObj = commentObj.get();
+                    feedback.setComment(comObj.getComent());
+                }
+                Users getUser = userService.findUsers(obj.getFeedbackGivenBy());
+                feedback.setFeedback(obj.getFeedbackinfo());
+                feedback.setFeedbackSender(obj.getFeedbackGivenBy());
+                feedback.setDateAndtime(obj.getCreatedOn());
+                feedback.setFeedbackSenderName(getUser.getUserName());
+                list.add(feedback);
+            }
+        }
+        return list;
     }
     
     public ArrayList<FeedbackData> showFeedbackForadmin(int appId) {
@@ -116,10 +124,18 @@ public class FeedbackService {
         Iterator<Feedback> itr = list.iterator();
         while (itr.hasNext()) {
             Feedback obj = itr.next();
+            System.out.println("Feedback id is: " + obj.getId());
             FeedbackData feedback = new FeedbackData();
+            Optional<FeedbackComent> commentObj = feedComentRepo.findByfeedbackId(obj.getId());
+            if (commentObj.isPresent()) {
+                FeedbackComent comObj = commentObj.get();
+                feedback.setComment(comObj.getComent());
+            }
+            Users getUser = userService.findUsers(obj.getFeedbackGivenBy());
             feedback.setFeedback(obj.getFeedbackinfo());
             feedback.setFeedbackSender(obj.getFeedbackGivenBy());
             feedback.setDateAndtime(obj.getCreatedOn());
+            feedback.setFeedbackSenderName(getUser.getUserName());
             feedback.setStatusMessage("Feedback displayed successfully");
             listObj.add(feedback);
         }
@@ -147,6 +163,12 @@ public class FeedbackService {
 		}
     	return feedComentPayload;
     }
+    
+//    public List<FeedbackData>showFeedback(String email,int appId)
+//    {
+//		
+//    	
+//    }
     
 //    public ArrayList<feedbackData>showfeedbackforAdmin(int appId)
 //    {

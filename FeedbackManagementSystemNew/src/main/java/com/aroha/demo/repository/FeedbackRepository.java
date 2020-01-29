@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
 	
-	@Query("select new com.aroha.demo.payload.FeedbackPayload(f.feedbackinfo,f.feedbackGivenBy,f.createdOn)from Feedback f left join f.group g where g.groupId=?1 order by f.createdOn desc")
+	@Query("select new com.aroha.demo.payload.FeedbackPayload(f.id,f.feedbackinfo,f.feedbackGivenBy,f.createdOn)from Feedback f left join f.group g where g.groupId=?1 order by f.createdOn desc")
 	public List<FeedbackPayload>showFeedback(int groupId);
 	
 //	@Query("select new com.aroha.demo.payload.FeedbackPayload(f.feedbackinfo,f.feedbackGivenBy,f.createdOn)from Feedback f left join f.appId a where a.appId=?1")
@@ -18,4 +18,5 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
 	
 	@Query(value="select * from feedback_details where app_id=?1 order by created_on desc",nativeQuery=true)
 	public List<Feedback>showFeedbackForAdmin(int appId);
+	
 }

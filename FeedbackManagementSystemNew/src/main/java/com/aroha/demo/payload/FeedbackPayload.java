@@ -5,7 +5,8 @@ import com.aroha.demo.model.Feedback;
 import com.aroha.demo.model.Group;
 
 public class FeedbackPayload {
-
+	
+	private Integer id;
     private int appId;
     private int groupId;
     private String userNameorEmail;
@@ -17,8 +18,9 @@ public class FeedbackPayload {
     private String createdOn;
     private String statusMessage;
     
-    public FeedbackPayload(String feedbackinfo, String feedbackGivenBy,String createdOn) {
+    public FeedbackPayload(Integer id,String feedbackinfo, String feedbackGivenBy,String createdOn) {
 		super();
+		this.id = id;
 		this.feedbackinfo = feedbackinfo;
 		this.feedbackGivenBy = feedbackGivenBy;
 		this.createdOn = createdOn;
@@ -26,6 +28,14 @@ public class FeedbackPayload {
     
 	public FeedbackPayload() {
 		super();
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public int getAppId() {
