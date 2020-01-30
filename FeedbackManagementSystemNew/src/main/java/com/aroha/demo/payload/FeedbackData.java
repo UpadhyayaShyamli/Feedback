@@ -1,11 +1,13 @@
 package com.aroha.demo.payload;
 
+import java.util.List;
+
 public class FeedbackData {
 	private String feedback;
 	private String feedbackSender;
 	private String dateAndtime;
 	private String statusMessage;
-	private String comment;
+	private List<String> comment;
     private String feedbackSenderName;
 	
 	public String getFeedback() {
@@ -32,10 +34,11 @@ public class FeedbackData {
 	public void setStatusMessage(String statusMessage) {
 		this.statusMessage = statusMessage;
 	}
-	public String getComment() {
+
+	public List<String> getComment() {
 		return comment;
 	}
-	public void setComment(String comment) {
+	public void setComment(List<String> comment) {
 		this.comment = comment;
 	}
 	public String getFeedbackSenderName() {

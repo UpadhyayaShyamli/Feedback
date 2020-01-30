@@ -96,6 +96,10 @@ public class GroupService {
     	return groupRepo.showGroup(userId);
     }
     
+    public List<Integer> getGroupId(int appId,long userId)
+    {
+    	return groupRepo.getGroup(appId, userId);
+    }
 //    public int isUserExistsinGroup(int groupId) {
 //    	int userCount = groupRepo.checkUserExists(groupId);
 //    	return userCount;

@@ -1,5 +1,6 @@
 package com.aroha.demo.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,6 @@ import com.aroha.demo.model.FeedbackComent;
 @Repository
 public interface FeedbackComentRepository extends JpaRepository<FeedbackComent, Long> {
 	
-	public Optional<FeedbackComent> findByfeedbackId(Integer id);
+	public List<FeedbackComent> findByfeedbackId(Integer id);
 
 }
