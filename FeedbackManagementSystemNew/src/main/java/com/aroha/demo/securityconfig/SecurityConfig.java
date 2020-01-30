@@ -1,5 +1,6 @@
 package com.aroha.demo.securityconfig;
 
+import com.aroha.demo.payload.JwtAuthenticationResponse;
 import com.aroha.demo.security.CustomUserDetailsService;
 import com.aroha.demo.security.JwtAuthenticationEntryPoint;
 import com.aroha.demo.security.JwtAuthenticationFilter;
@@ -39,6 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationFilter();
     }
 
+    @Bean
+    public JwtAuthenticationResponse jwtResponse() {
+    	return new JwtAuthenticationResponse();
+    }
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder

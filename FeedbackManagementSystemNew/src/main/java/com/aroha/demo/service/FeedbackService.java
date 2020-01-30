@@ -18,8 +18,10 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,33 +124,17 @@ public class FeedbackService {
     public ArrayList<FeedbackData> showFeedbackForadmin(int appId) {
         List<Feedback> list = feedRepo.showFeedbackForAdmin(appId);
         ArrayList<FeedbackData> listObj = new ArrayList<>();
-        List<String>listcoment=new ArrayList<>();
-//        if(list.size()==0)
-//        {
-//        	FeedbackData feedback = new FeedbackData();
-//        	feedback.setStatusMessage("No feedback Found");
-//        	listObj.add(feedback);
-//        }
         Iterator<Feedback> itr = list.iterator();
         while (itr.hasNext()) {
             Feedback obj = itr.next();
             System.out.println("Feedback id is: " + obj.getId());
             FeedbackData feedback = new FeedbackData();
-            List<FeedbackComent> commentObj = feedComentRepo.findByfeedbackId(obj.getId());
-            if (!commentObj.isEmpty()) {
-            	for(FeedbackComent fcObj:commentObj) {
-               // FeedbackComent comObj = commentObj.get(fcObj);
-            		listcoment.add(fcObj.getComent());
-            	}
-            	
-            	feedback.setComment(listcoment);
-            }
             Users getUser = userService.findUsers(obj.getFeedbackGivenBy());
             feedback.setFeedback(obj.getFeedbackinfo());
             feedback.setFeedbackSender(obj.getFeedbackGivenBy());
             feedback.setDateAndtime(obj.getCreatedOn());
             feedback.setFeedbackSenderName(getUser.getUserName());
-            feedback.setStatusMessage("Feedback displayed successfully");
+            //feedback.setStatusMessage("Feedback displayed successfully");
             listObj.add(feedback);
         }
         return listObj;
@@ -182,28 +168,20 @@ public class FeedbackService {
         long userId = user.getUserId();
         System.out.println("User Id: " + userId);
         List<Integer> getgroupObj = groupService.getGroupId(appId, userId);
-        FeedbackComent comment = new FeedbackComent();
+        //FeedbackComent comment = new FeedbackComent();
         ArrayList<FeedbackData> list = new ArrayList<>();
-        List<String>listObj=new ArrayList<>();
+        //List<String>listObj=new ArrayList<>();
         for (Integer i : getgroupObj) {
             //    		System.out.println("GroupId is: "+g.getGroupId());
             List<FeedbackPayload> feedObj = feedRepo.showFeedback(i);
             Iterator<FeedbackPayload> itr = feedObj.iterator();
-            
+          
             while (itr.hasNext()) {
                 FeedbackPayload obj = itr.next();
                 System.out.println("Feedback Id:" + obj.getId());
                 FeedbackData feedback = new FeedbackData();
-                List<FeedbackComent> commentObj = feedComentRepo.findByfeedbackId(obj.getId());
-                if (!commentObj.isEmpty()) {
-                	for(FeedbackComent fcObj:commentObj) {
-                   // FeedbackComent comObj = commentObj.get(fcObj);
-                		listObj.add(fcObj.getComent());
-                		
-                	}
-                	feedback.setComment(listObj);
-                }
                 Users getUser = userService.findUsers(obj.getFeedbackGivenBy());
+                feedback.setFeedbackId(obj.getId());
                 feedback.setFeedback(obj.getFeedbackinfo());
                 feedback.setFeedbackSender(obj.getFeedbackGivenBy());
                 feedback.setDateAndtime(obj.getCreatedOn());
@@ -212,5 +190,10 @@ public class FeedbackService {
             }
         }
         return list;
+    }
+    
+    public List<FeedbackComent>getComent(int feedbackId)
+    {
+    	return feedComentRepo.showComent(feedbackId);
     }
     }

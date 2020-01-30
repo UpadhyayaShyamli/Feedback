@@ -40,6 +40,9 @@ public class AuthController {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private JwtAuthenticationResponse jwtResponse;
 
 	private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
@@ -89,7 +92,15 @@ public class AuthController {
 					);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = tokenProvider.generateToken(authentication);
-		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+		Users user=userService.findUsers(loginRequest.getUsernameOrEmail());
+		jwtResponse.setAccessToken(jwt);
+		jwtResponse.setTokenType("Bearer");
+		jwtResponse.setId(user.getUserId());
+		jwtResponse.setName(user.getUserName());
+		jwtResponse.setUsername(user.getUserEmailId());
+		jwtResponse.setRoles(authentication.getAuthorities());
+		//return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+		return ResponseEntity.ok(jwtResponse);
 	}
 
 	@PostMapping("/signUp")
