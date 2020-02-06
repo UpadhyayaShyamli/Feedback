@@ -19,4 +19,7 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
 	@Query(value="select * from feedback_details where app_id=?1 order by created_on desc",nativeQuery=true)
 	public List<Feedback>showFeedbackForAdmin(int appId);
 	
+	@Query(value="select * from feedback_details where feedback_given_by=?1 and app_id=?2",nativeQuery=true)
+	public List<Feedback>showOwnFeedback(String feedbackGivenBy,int appId);
+
 }

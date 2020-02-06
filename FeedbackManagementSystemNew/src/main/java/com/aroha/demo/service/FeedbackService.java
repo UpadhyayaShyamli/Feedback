@@ -9,6 +9,7 @@ import com.aroha.demo.payload.FeedbackComentPayload;
 import com.aroha.demo.payload.FeedbackData;
 import com.aroha.demo.payload.FeedbackPayload;
 import com.aroha.demo.payload.GroupDataRequest;
+import com.aroha.demo.payload.OwnFeedbackPayload;
 import com.aroha.demo.repository.FeedbackComentRepository;
 import com.aroha.demo.repository.FeedbackRepository;
 import com.aroha.demo.repository.GroupRepository;
@@ -130,6 +131,7 @@ public class FeedbackService {
             System.out.println("Feedback id is: " + obj.getId());
             FeedbackData feedback = new FeedbackData();
             Users getUser = userService.findUsers(obj.getFeedbackGivenBy());
+            feedback.setFeedbackId(obj.getId());
             feedback.setFeedback(obj.getFeedbackinfo());
             feedback.setFeedbackSender(obj.getFeedbackGivenBy());
             feedback.setDateAndtime(obj.getCreatedOn());
@@ -195,5 +197,39 @@ public class FeedbackService {
     public List<FeedbackComent>getComent(int feedbackId)
     {
     	return feedComentRepo.showComent(feedbackId);
+    }
+    
+    public List<OwnFeedbackPayload> showOwnGivenFeedback(String email,int appId)
+    {
+    	List<Feedback> getOwnGivenfeedback = feedRepo.showOwnFeedback(email, appId);
+    	ArrayList<OwnFeedbackPayload> ofPayloadList = new ArrayList<>();
+    	for(Feedback f:getOwnGivenfeedback)
+    	{
+    		OwnFeedbackPayload ofPayload = new OwnFeedbackPayload();
+    		ofPayload.setFeedbackId(f.getId());
+    		ofPayload.setFeedbackInfo(f.getFeedbackinfo());
+    		ofPayload.setToWhom(f.getToWhomFeedbackgiven());
+    		ofPayload.setDateAndtime(f.getCreatedOn());
+    		ofPayloadList.add(ofPayload);
+    	}
+    	
+    	return ofPayloadList;
+    }
+    
+    public ArrayList<OwnFeedbackPayload> showOwnFeedbackForadmin(int appId) {
+        List<Feedback> list = feedRepo.showFeedbackForAdmin(appId);
+        ArrayList<OwnFeedbackPayload> ofPayloadList = new ArrayList<>();
+        Iterator<Feedback> itr = list.iterator();
+        while (itr.hasNext()) {
+            Feedback f = itr.next();
+            System.out.println("Feedback id is: " + f.getId());
+            OwnFeedbackPayload ofPayload = new OwnFeedbackPayload();
+            ofPayload.setFeedbackId(f.getId());
+    		ofPayload.setFeedbackInfo(f.getFeedbackinfo());
+    		ofPayload.setToWhom(f.getToWhomFeedbackgiven());
+    		ofPayload.setDateAndtime(f.getCreatedOn());
+    		ofPayloadList.add(ofPayload);
+        }
+        return ofPayloadList;
     }
     }

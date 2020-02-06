@@ -76,9 +76,9 @@ public class FeedBackController {
 		String email = user.getEmail();
         int appId = feedObj.getAppId();
         if (user.isAdminRole()) {
-            if (feedService.showFeedbackForadmin(appId).isEmpty()) {
-                return ResponseEntity.ok("No Feedback found");
-            }
+//            if (feedService.showFeedbackForadmin(appId).isEmpty()) {
+//                return ResponseEntity.ok("No Feedback found");
+//            }
             return ResponseEntity.ok(feedService.showFeedbackForadmin(appId));
         }
 //        if (feedService.showFeedback(email,appId).isEmpty()) {
@@ -86,6 +86,24 @@ public class FeedBackController {
 //        }
         return ResponseEntity.ok(feedService.showFeedback(email,appId));
     }
+	
+	@PostMapping("/showGivenFeedback")
+	public ResponseEntity<?>showOwnFeedback(@RequestBody FeedbackPayload feedObj,@CurrentUser UserPrincipal user)
+	{
+		String email = user.getEmail();
+        int appId = feedObj.getAppId();
+        if (user.isAdminRole()) {
+            if (feedService.showOwnFeedbackForadmin(appId).isEmpty()) {
+                return ResponseEntity.ok("No Feedback found");
+            }
+            return ResponseEntity.ok(feedService.showOwnFeedbackForadmin(appId));
+        }
+//        if (feedService.showFeedback(email,appId).isEmpty()) {
+//            return ResponseEntity.ok("No Feedback found");
+//        }
+        return ResponseEntity.ok(feedService.showOwnGivenFeedback(email,appId));
+    }
+	
 	
 	@GetMapping("/showComent")
 	public ResponseEntity<?>getComent(@RequestParam("feedbackId")int feedbackId)
