@@ -20,4 +20,5 @@ public interface UserRepository extends JpaRepository<Users, Long>
 	
 	@Query("select new com.aroha.demo.model.Users(u.userId,u.userName,u.userEmailId) from Users u")
 	public List<Users>getUsers();
+	
 }

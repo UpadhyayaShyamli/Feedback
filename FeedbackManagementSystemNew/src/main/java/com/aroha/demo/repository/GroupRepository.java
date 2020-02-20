@@ -36,4 +36,8 @@ public interface GroupRepository extends JpaRepository<Group, Integer> {
     		"on gu.user_id=au.user_id where ag.application_id=?1 and gu.user_id=?2 group by ag.group_id",nativeQuery=true)
     public List<Integer> getGroup(int appId,long userId);
     
+    @Query(value="select count(u.user_id)from users u inner join app_users a on u.user_id=a.user_id inner join group_user g \r\n" + 
+    		"on u.user_id=g.user_id where u.user_email_id=?1 and a.app_id=?2 and  g.group_id=?3",nativeQuery = true)
+    public Integer checkUserExistsinAppGroup(String userEmail,int appId,int groupId);
+    
 }

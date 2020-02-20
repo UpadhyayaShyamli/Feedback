@@ -68,7 +68,6 @@ public class UserService {
 		//int appId=signup.getAppId();
 		//System.out.println("AppId: "+appId);
 		long roleId=signup.getRoleId();
-
 		Users userObj=new Users();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");

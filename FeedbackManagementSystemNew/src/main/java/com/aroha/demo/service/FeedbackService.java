@@ -8,21 +8,19 @@ import com.aroha.demo.model.Users;
 import com.aroha.demo.payload.FeedbackComentPayload;
 import com.aroha.demo.payload.FeedbackData;
 import com.aroha.demo.payload.FeedbackPayload;
-import com.aroha.demo.payload.GroupDataRequest;
 import com.aroha.demo.payload.OwnFeedbackPayload;
 import com.aroha.demo.repository.FeedbackComentRepository;
 import com.aroha.demo.repository.FeedbackRepository;
-import com.aroha.demo.repository.GroupRepository;
 import com.aroha.demo.repository.UserRepository;
 
 import java.text.SimpleDateFormat;
-import java.time.Instant;
+
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -142,28 +140,6 @@ public class FeedbackService {
         return listObj;
     }
     
-    public FeedbackComentPayload savefeedbackComent(int feedbackId,String coment)
-    {
-    	Optional<Feedback> feed = feedRepo.findById(feedbackId);
-    	Feedback feedObj = feed.get();
-    	int feedId = feedObj.getId();
-    	FeedbackComent feedComent = new FeedbackComent();
-    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
-		Date date = new Date();
-		String date_time = sdf.format(date);
-    	feedComent.setFeedbackId(feedId);
-    	feedComent.setComent(coment);
-    	feedComent.setDateAndTime(date_time);
-    	FeedbackComentPayload feedComentPayload = new FeedbackComentPayload();
-    	try {
-	    	feedComentRepo.save(feedComent);
-	    	feedComentPayload.setStatusMessage("coment saved");
-    	}catch (Exception e) {
-			feedComentPayload.setStatusMessage(e.getMessage());
-		}
-    	return feedComentPayload;
-    }
-    
     public List<FeedbackData>showFeedback(String email,int appId)
     {
     	Users user = userService.findUsers(email);
@@ -193,6 +169,30 @@ public class FeedbackService {
         }
         return list;
     }
+    
+    public FeedbackComentPayload savefeedbackComent(int feedbackId,String coment)
+    {
+    	Optional<Feedback> feed = feedRepo.findById(feedbackId);
+    	Feedback feedObj = feed.get();
+    	int feedId = feedObj.getId();
+    	FeedbackComent feedComent = new FeedbackComent();
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+		Date date = new Date();
+		String date_time = sdf.format(date);
+    	feedComent.setFeedbackId(feedId);
+    	feedComent.setComent(coment);
+    	feedComent.setDateAndTime(date_time);
+    	FeedbackComentPayload feedComentPayload = new FeedbackComentPayload();
+    	try {
+	    	feedComentRepo.save(feedComent);
+	    	feedComentPayload.setStatusMessage("coment saved");
+    	}catch (Exception e) {
+			feedComentPayload.setStatusMessage(e.getMessage());
+		}
+    	return feedComentPayload;
+    }
+    
+   
     
     public List<FeedbackComent>getComent(int feedbackId)
     {

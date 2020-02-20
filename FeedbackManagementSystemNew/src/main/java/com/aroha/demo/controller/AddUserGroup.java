@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aroha.demo.model.Users;
+import com.aroha.demo.payload.AddUserPayload;
 import com.aroha.demo.payload.UserGroup;
 import com.aroha.demo.service.AddUserService;
 
@@ -30,4 +31,12 @@ public class AddUserGroup {
         List<Users> userId=userGroup.getUserId();
         return ResponseEntity.ok(addUserService.addUserGroup(appId, groupId, userId));
     }
+    
+   @PostMapping("/addUser")
+   public ResponseEntity<?> addUsers(@RequestBody AddUserPayload addUserPayload )
+   {
+	   //int appId = addUserPayload.getAppId();
+	   //int groupId = addUserPayload.getGroupId();
+	   return ResponseEntity.ok(addUserService.addUserdata(addUserPayload));
+   }
 }

@@ -1,7 +1,5 @@
 package com.aroha.demo.payload;
 
-import java.util.List;
-
 public class FeedbackData {
 	private int feedbackId;
 	private String feedback;
