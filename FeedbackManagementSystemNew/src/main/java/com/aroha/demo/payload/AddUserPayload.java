@@ -11,6 +11,9 @@ public class AddUserPayload {
 	private int groupId;
 	private List<Users>user;
 	
+	private String successStatus;
+    private String unSuccessStatus;
+	
 	public int getAppId() {
 		return appId;
 	}
@@ -28,6 +31,18 @@ public class AddUserPayload {
 	}
 	public void setUser(List<Users> user) {
 		this.user = user;
+	}
+	public String getSuccessStatus() {
+		return successStatus;
+	}
+	public void setSuccessStatus(String successStatus) {
+		this.successStatus = successStatus;
+	}
+	public String getUnSuccessStatus() {
+		return unSuccessStatus;
+	}
+	public void setUnSuccessStatus(String unSuccessStatus) {
+		this.unSuccessStatus = unSuccessStatus;
 	}
 
 }

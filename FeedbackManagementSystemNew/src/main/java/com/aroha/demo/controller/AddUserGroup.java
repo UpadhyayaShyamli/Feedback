@@ -24,19 +24,17 @@ public class AddUserGroup {
     @Autowired
     private AddUserService addUserService;
     
-    @PostMapping("/addUserInGroup")
-    public ResponseEntity<?> addUser(@RequestBody UserGroup userGroup) {
-        int appId = userGroup.getAppId();
-        int groupId = userGroup.getGroupId();
-        List<Users> userId=userGroup.getUserId();
-        return ResponseEntity.ok(addUserService.addUserGroup(appId, groupId, userId));
-    }
+//    @PostMapping("/addUserInGroup")
+//    public ResponseEntity<?> addUser(@RequestBody UserGroup userGroup) {
+//        int appId = userGroup.getAppId();
+//        int groupId = userGroup.getGroupId();
+//        List<Users> userId=userGroup.getUserId();
+//        return ResponseEntity.ok(addUserService.addUserGroup(appId, groupId, userId));
+//    }
     
-   @PostMapping("/addUser")
-   public ResponseEntity<?> addUsers(@RequestBody AddUserPayload addUserPayload )
-   {
-	   //int appId = addUserPayload.getAppId();
-	   //int groupId = addUserPayload.getGroupId();
-	   return ResponseEntity.ok(addUserService.addUserdata(addUserPayload));
-   }
+    @PostMapping("/addUser")
+	public ResponseEntity<?> addUsers(@RequestBody AddUserPayload addUserPayload )
+	{
+		return ResponseEntity.ok(addUserService.addUserdata(addUserPayload));
+	}
 }

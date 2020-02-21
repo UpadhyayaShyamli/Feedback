@@ -44,21 +44,21 @@ public class UserService {
         return userRepo.existsByuserEmailId(email);
     }
 
-    public ArrayList<Users> getUsers(List<Users>userId) {
-    	//Optional<Users> list2 =null;
-    	ArrayList<Users>list2=new ArrayList<>();
-    	for(int i=0;i<userId.size();i++)
-    	{
-    		Users userObj = userId.get(i);
-    		Users list = userRepo.findById(userObj.getUserId()).orElseThrow(()->
-    		new RuntimeException("User with Id "+userObj.getUserId()+" not found"));
-    		System.out.println("------uSERiD-------"+userObj.getUserId());
-    		//return list;
-    		list2.add(list);
-    	}
-		return list2;
-    }
-    
+//    public ArrayList<Users> getUsers(List<Users>userId) {
+//    	//Optional<Users> list2 =null;
+//    	ArrayList<Users>list2=new ArrayList<>();
+//    	for(int i=0;i<userId.size();i++)
+//    	{
+//    		Users userObj = userId.get(i);
+//    		Users list = userRepo.findById(userObj.getUserId()).orElseThrow(()->
+//    		new RuntimeException("User with Id "+userObj.getUserId()+" not found"));
+//    		System.out.println("------uSERiD-------"+userObj.getUserId());
+//    		//return list;
+//    		list2.add(list);
+//    	}
+//		return list2;
+//    }
+
     public Users findUsers(String email) {
     	return userRepo.findByuserEmailId(email);
     }
@@ -117,5 +117,21 @@ public class UserService {
 	   System.out.println("size is "+u.size());
 	   return u;
 	   //return 
+   }
+   
+   public Integer isUserPresentInApp(long userId,int appId) {
+	   return userRepo.ifUserPresentInApp(userId, appId);
+   }
+   
+   public Integer isUserPresentInGroup(long userId,int groupId) {
+	   return userRepo.ifUserPresentInGroup(userId, groupId);
+   }
+   
+   public void saveUserApp(long userId,int appId) {
+	   userRepo.saveUserInApp(userId,appId);
+   }
+   
+   public void saveUserGroup(long userId,int groupId) {
+	   userRepo.saveUserInGroup(userId, groupId);
    }
 }
