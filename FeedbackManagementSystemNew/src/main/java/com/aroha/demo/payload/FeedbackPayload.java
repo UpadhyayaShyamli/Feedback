@@ -3,6 +3,7 @@ package com.aroha.demo.payload;
 import com.aroha.demo.model.Application;
 import com.aroha.demo.model.Feedback;
 import com.aroha.demo.model.Group;
+import com.aroha.demo.model.Users;
 
 public class FeedbackPayload {
 	
@@ -16,6 +17,7 @@ public class FeedbackPayload {
     private Group group;
     private String feedbackGivenBy;
     private String createdOn;
+    private Users user;
     private String statusMessage;
     
     public FeedbackPayload(Integer id,String feedbackinfo, String feedbackGivenBy,String createdOn) {
@@ -117,5 +119,12 @@ public class FeedbackPayload {
 	public void setApplication(Application application) {
 		this.application = application;
 	}
-	
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
+	}
 }

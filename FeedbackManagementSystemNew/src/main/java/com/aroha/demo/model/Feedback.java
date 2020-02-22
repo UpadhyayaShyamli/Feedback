@@ -1,7 +1,5 @@
 package com.aroha.demo.model;
 
-import com.aroha.demo.config.DateAudit;
-
 import java.io.Serializable;
 
 import javax.persistence.Basic;

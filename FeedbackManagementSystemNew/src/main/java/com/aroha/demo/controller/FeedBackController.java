@@ -1,14 +1,11 @@
 package com.aroha.demo.controller;
 
 import com.aroha.demo.model.Feedback;
-import com.aroha.demo.payload.FeedbackData;
+import com.aroha.demo.model.Users;
 import com.aroha.demo.payload.FeedbackPayload;
 import com.aroha.demo.security.CurrentUser;
 import com.aroha.demo.security.UserPrincipal;
 import com.aroha.demo.service.FeedbackService;
-
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,12 +25,24 @@ public class FeedBackController {
 	private FeedbackService feedService;
 
 	@PostMapping("/saveFeedback")
-	public ResponseEntity<?> saveFeedback(@RequestBody FeedbackPayload feedObj,@CurrentUser UserPrincipal user) {
+	public ResponseEntity<?> saveFeedback(@RequestBody FeedbackPayload feedObj) {
 		int appId=feedObj.getAppId();
 		int groupId=feedObj.getGroupId();
-		String email=user.getEmail();
+		//String email=user.getEmail();
+		String emailId = feedObj.getUserNameorEmail();
 		Feedback feedback=feedObj.getFeedback();
-		return ResponseEntity.ok(feedService.saveFeedback(appId, groupId, email, feedback));
+		return ResponseEntity.ok(feedService.saveFeedback(appId, groupId, emailId, feedback));
+	}
+	
+	@PostMapping("/saveFeedbackdata")
+	public ResponseEntity<?> saveFeedbackdata(@RequestBody FeedbackPayload feedObj) {
+		int appId=feedObj.getAppId();
+		int groupId=feedObj.getGroupId();
+		//String email=user.getEmail();
+		String emailId = feedObj.getUserNameorEmail();
+		Feedback feedback=feedObj.getFeedback();
+		Users user = feedObj.getUser();
+		return ResponseEntity.ok(feedService.saveFeedbackDetails(appId, groupId, emailId, feedback,user));
 	}
 
 //	@PostMapping("/showFeedbackforUser")

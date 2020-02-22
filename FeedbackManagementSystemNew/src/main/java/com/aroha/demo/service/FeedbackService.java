@@ -4,6 +4,7 @@ import com.aroha.demo.model.Application;
 import com.aroha.demo.model.Feedback;
 import com.aroha.demo.model.FeedbackComent;
 import com.aroha.demo.model.Group;
+import com.aroha.demo.model.Role;
 import com.aroha.demo.model.Users;
 import com.aroha.demo.payload.FeedbackComentPayload;
 import com.aroha.demo.payload.FeedbackData;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -40,6 +42,10 @@ public class FeedbackService {
     private UserRepository userRepo;
     @Autowired
     private FeedbackComentRepository feedComentRepo;
+    @Autowired
+	private RoleService roleService;
+    @Autowired
+	PasswordEncoder passwordEncoder;
 
     public FeedbackPayload saveFeedback(int appId, int groupId, String email, Feedback feedback) {
     	FeedbackPayload feedPayload = new FeedbackPayload();
@@ -231,5 +237,94 @@ public class FeedbackService {
     		ofPayloadList.add(ofPayload);
         }
         return ofPayloadList;
+    }
+
+    public FeedbackPayload saveFeedbackDetails(int appId, int groupId, String email, Feedback feedback,Users userObj) {
+    	FeedbackPayload feedPayload = new FeedbackPayload();
+    	Boolean isUserExists = userService.existsByEmail(email);
+    	if(isUserExists) {
+    		userObj=userRepo.findByuserEmailId(email);
+    		long userId=userObj.getUserId();
+        Optional<Application> app = appService.findApplication(appId);
+        Optional<Group> group = groupService.getGroup(groupId);
+        if (!app.isPresent()) {
+            throw new RuntimeException("Application with id " + appId + " not found");
+        }
+        if (!group.isPresent()) {
+            throw new RuntimeException("Group with id " + groupId + " not found");
+        }
+        Application appObj = app.get();
+        Group groupObj = group.get();
+        String toWhomFeedbackgiven=groupObj.getGroupName();
+        //Instant instant=Instant.ofEpochMilli(new Date().getTime());
+        //feedback.setCreatedAt(instant);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+        Date date = new Date();
+        String feedbackgiving_date_time = sdf.format(date);
+        feedback.setCreatedOn(feedbackgiving_date_time);
+        feedback.setFeedbackGivenBy(email);
+        feedback.setAppId(appObj);
+        feedback.setGroup(groupObj);
+        feedback.setFeedbackGivenByuserId(userId);
+        feedback.setToWhomFeedbackgiven(toWhomFeedbackgiven);
+        groupObj.getFeed().add(feedback);
+        appObj.getFeedbackObj().add(feedback);
+        try {
+        feedRepo.save(feedback);
+        feedPayload.setAppId(appId);
+        feedPayload.setGroupId(groupId);
+        //feedPayload.setFeedback(feedback);
+        feedPayload.setFeedbackGivenBy(feedback.getFeedbackGivenBy());
+        feedPayload.setFeedbackinfo(feedback.getFeedbackinfo());
+        feedPayload.setStatusMessage("Feedback Given successfully to-> "+groupObj.getGroupName());
+        }catch (Exception e) {
+        	 feedPayload.setStatusMessage(e.getMessage());
+		}
+    	}
+    	else {
+    		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+			Date date = new Date();
+			userObj.setCreatedOn(sdf.format(date));
+			userObj.setPassword(passwordEncoder.encode(userObj.getMobileNumber()));
+			Role role=roleService.findRoles(2).get();
+			userObj.getRoles().add(role);
+			userService.saveUser(userObj);
+			Optional<Application> app = appService.findApplication(appId);
+	        Optional<Group> group = groupService.getGroup(groupId);
+	        if (!app.isPresent()) {
+	            throw new RuntimeException("Application with id " + appId + " not found");
+	        }
+	        if (!group.isPresent()) {
+	            throw new RuntimeException("Group with id " + groupId + " not found");
+	        }
+	        Application appObj = app.get();
+	        Group groupObj = group.get();
+	        String toWhomFeedbackgiven=groupObj.getGroupName();
+	        //Instant instant=Instant.ofEpochMilli(new Date().getTime());
+	        //feedback.setCreatedAt(instant);
+	        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+	        Date date1 = new Date();
+	        String feedbackgiving_date_time = sdf1.format(date1);
+	        feedback.setCreatedOn(feedbackgiving_date_time);
+	        feedback.setFeedbackGivenBy(email);
+	        feedback.setAppId(appObj);
+	        feedback.setGroup(groupObj);
+	        feedback.setFeedbackGivenByuserId(userObj.getUserId());
+	        feedback.setToWhomFeedbackgiven(toWhomFeedbackgiven);
+	        groupObj.getFeed().add(feedback);
+	        appObj.getFeedbackObj().add(feedback);
+	        try {
+	        feedRepo.save(feedback);
+	        feedPayload.setAppId(appId);
+	        feedPayload.setGroupId(groupId);
+	        //feedPayload.setFeedback(feedback);
+	        feedPayload.setFeedbackGivenBy(feedback.getFeedbackGivenBy());
+	        feedPayload.setFeedbackinfo(feedback.getFeedbackinfo());
+	        feedPayload.setStatusMessage("Feedback Given successfully to-> "+groupObj.getGroupName());
+	        }catch (Exception e) {
+	        	 feedPayload.setStatusMessage(e.getMessage());
+			}
+    	}
+        return feedPayload;
     }
     }
