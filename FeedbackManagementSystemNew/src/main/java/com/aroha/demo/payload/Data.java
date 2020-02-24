@@ -1,18 +1,18 @@
 package com.aroha.demo.payload;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Data {
 	
-	private List<String> newEmployees=new ArrayList<>();
+	private Set<String> newEmployees=new HashSet<>();
 	private String message;
-
-	public List<String> getNewEmployees() {
+	
+	public Set<String> getNewEmployees() {
 		return newEmployees;
 	}
 
-	public void setNewEmployees(List<String> newEmployees) {
+	public void setNewEmployees(Set<String> newEmployees) {
 		this.newEmployees = newEmployees;
 	}
 
