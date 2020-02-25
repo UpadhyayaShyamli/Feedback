@@ -8,7 +8,9 @@ import com.aroha.demo.model.Role;
 import com.aroha.demo.model.Users;
 import com.aroha.demo.payload.FeedbackComentPayload;
 import com.aroha.demo.payload.FeedbackData;
+import com.aroha.demo.payload.FeedbackInfoResponse;
 import com.aroha.demo.payload.FeedbackPayload;
+import com.aroha.demo.payload.FeedbackResponseData;
 import com.aroha.demo.payload.OwnFeedbackPayload;
 import com.aroha.demo.repository.FeedbackComentRepository;
 import com.aroha.demo.repository.FeedbackRepository;
@@ -47,8 +49,10 @@ public class FeedbackService {
     @Autowired
 	PasswordEncoder passwordEncoder;
 
-    public FeedbackPayload saveFeedback(int appId, int groupId, String email, Feedback feedback) {
-    	FeedbackPayload feedPayload = new FeedbackPayload();
+    public FeedbackInfoResponse saveFeedback(int appId, int groupId, String email, Feedback feedback) {
+    	//FeedbackPayload feedPayload = new FeedbackPayload();
+    	FeedbackResponseData frd = new FeedbackResponseData();
+    	FeedbackInfoResponse feedInfoRes = new FeedbackInfoResponse();
     	Users user=userRepo.findByuserEmailId(email);
     	long userId=user.getUserId();
         Optional<Application> app = appService.findApplication(appId);
@@ -76,17 +80,19 @@ public class FeedbackService {
         groupObj.getFeed().add(feedback);
         appObj.getFeedbackObj().add(feedback);
         try {
-        feedRepo.save(feedback);
-        feedPayload.setAppId(appId);
-        feedPayload.setGroupId(groupId);
-        //feedPayload.setFeedback(feedback);
-        feedPayload.setFeedbackGivenBy(feedback.getFeedbackGivenBy());
-        feedPayload.setFeedbackinfo(feedback.getFeedbackinfo());
-        feedPayload.setStatusMessage("Feedback Given successfully to-> "+groupObj.getGroupName());
+	        feedRepo.save(feedback);
+	        frd.setAppId(appId);
+	        frd.setGroupId(groupId);
+	        frd.setFeedbackGivenBy(feedback.getFeedbackGivenBy());
+	        frd.setFeedbackGivenByuserId(feedback.getFeedbackGivenByuserId());
+	        frd.setFeedbackInfo(feedback.getFeedbackinfo());
+	        feedInfoRes.setStatus(true);
+	        feedInfoRes.setStatusMessage("Feedback Given successfully to-> "+groupObj.getGroupName());
+	        feedInfoRes.setData(frd);
         }catch (Exception e) {
-        	 feedPayload.setStatusMessage(e.getMessage());
+        	feedInfoRes.setStatusMessage(e.getMessage());
 		}
-        return feedPayload;
+        return feedInfoRes;
     }
     
 //    public List<FeedbackData> showFeedbackforUser(String email) {

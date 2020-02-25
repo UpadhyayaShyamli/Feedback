@@ -7,14 +7,10 @@ import com.aroha.demo.model.Users;
 import com.aroha.demo.payload.AddUserPayload;
 import com.aroha.demo.payload.AddUserPayloadObject;
 import com.aroha.demo.payload.Data;
-import com.aroha.demo.payload.UserGroup;
-import com.aroha.demo.repository.GroupRepository;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +32,8 @@ public class AddUserService {
 	@Autowired
 	private RoleService roleService;
 
-	@Autowired
-	private GroupRepository groupRepo;
+//	@Autowired
+//	private GroupRepository groupRepo;
 	
 	@Autowired
 	PasswordEncoder passwordEncoder;

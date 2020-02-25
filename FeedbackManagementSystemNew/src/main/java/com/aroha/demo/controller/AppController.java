@@ -14,6 +14,7 @@ import com.aroha.demo.payload.AppPayload;
 import com.aroha.demo.security.CurrentUser;
 import com.aroha.demo.security.UserPrincipal;
 import com.aroha.demo.service.AppService;
+import com.aroha.demo.service.ExternalAppService;
 
 @RestController
 @CrossOrigin("*")
@@ -22,6 +23,9 @@ public class AppController {
 
     @Autowired
     private AppService appService;
+    
+    @Autowired
+    private ExternalAppService externServ;
 
     @PostMapping("/registerApp")
     public ResponseEntity<?> createApp(@RequestBody Application app) {
@@ -55,5 +59,10 @@ public class AppController {
     {
     	long userId = user.getId();
     	return ResponseEntity.ok(appService.getUserApp(userId));
+    }
+    
+    @GetMapping("/getAllAppGroupForExternal")
+    public ResponseEntity<?> getAllApplication(){
+    	return ResponseEntity.ok(externServ.getAllApplication());
     }
 }
