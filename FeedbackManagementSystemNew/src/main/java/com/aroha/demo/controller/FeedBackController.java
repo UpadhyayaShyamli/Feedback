@@ -44,33 +44,6 @@ public class FeedBackController {
 		Users user = feedObj.getUser();
 		return ResponseEntity.ok(feedService.saveFeedbackDetails(appId, groupId, emailId, feedback,user));
 	}
-
-//	@PostMapping("/showFeedbackforUser")
-//    public ResponseEntity<?> showFeedbackForUser(@RequestBody FeedbackPayload feedObj, @CurrentUser UserPrincipal user) {
-//        //String email=feedObj.getUserNameorEmail();
-//        String email = user.getEmail();
-//        int appId = feedObj.getAppId();
-//        if (user.isAdminRole()) {
-//            if (feedService.showFeedbackForadmin(appId).isEmpty()) {
-//                return ResponseEntity.ok("No Feedback found");
-//            }
-//            return ResponseEntity.ok(feedService.showFeedbackForadmin(appId));
-//        }
-//        if (feedService.showFeedbackforUser(email).isEmpty()) {
-//            return ResponseEntity.ok("No Feedback found");
-//        }
-//        return ResponseEntity.ok(feedService.showFeedbackforUser(email));
-//    }
-//
-//	@PostMapping("/showFeedbackforAdmin")
-//	public ResponseEntity<?>showFeedbackForAdmin(@RequestBody FeedbackPayload feedObj,@CurrentUser UserPrincipal user){
-//		int appId = feedObj.getAppId();
-//		List<FeedbackData>listObj=null;
-//		if(user.isAdminRole()) {
-//			listObj=feedService.showFeedbackForadmin(appId);
-//		}
-//		return ResponseEntity.ok(listObj);
-//	}
 	
 	@PostMapping("/saveFeedbackComent")
 	public ResponseEntity<?>saveFeedbackComent(@RequestParam("feedbackId") int feedbackId,

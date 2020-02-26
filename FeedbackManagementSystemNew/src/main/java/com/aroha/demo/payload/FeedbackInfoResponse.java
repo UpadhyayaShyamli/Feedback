@@ -4,6 +4,7 @@ public class FeedbackInfoResponse {
 	
 	private boolean status;
 	private String statusMessage;
+	private int statusCode;
 	private FeedbackResponseData data;
 	public boolean isStatus() {
 		return status;
@@ -23,4 +24,11 @@ public class FeedbackInfoResponse {
 	public void setData(FeedbackResponseData data) {
 		this.data = data;
 	}
+	public int getStatusCode() {
+		return statusCode;
+	}
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
+	}
+	
 }

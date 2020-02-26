@@ -3,9 +3,14 @@ package com.aroha.demo.payload;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+
+
+
 public class ExternalAppData {
 	
 	private boolean status;
+	private int statusCode;
 	private String statusMessage;
 	private ApplicationListData data;
 	
@@ -26,6 +31,12 @@ public class ExternalAppData {
 	}
 	public void setData(ApplicationListData data) {
 		this.data = data;
+	}
+	public int getStatusCode() {
+		return statusCode;
+	}
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
 	}
 	
 }

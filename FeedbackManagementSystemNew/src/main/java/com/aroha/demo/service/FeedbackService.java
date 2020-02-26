@@ -26,6 +26,7 @@ import java.util.List;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -87,51 +88,17 @@ public class FeedbackService {
 	        frd.setFeedbackGivenByuserId(feedback.getFeedbackGivenByuserId());
 	        frd.setFeedbackInfo(feedback.getFeedbackinfo());
 	        feedInfoRes.setStatus(true);
+	        feedInfoRes.setStatusCode(HttpStatus.OK.value());
 	        feedInfoRes.setStatusMessage("Feedback Given successfully to-> "+groupObj.getGroupName());
 	        feedInfoRes.setData(frd);
         }catch (Exception e) {
         	feedInfoRes.setStatusMessage(e.getMessage());
+        	feedInfoRes.setStatus(false);
+	        feedInfoRes.setStatusCode(HttpStatus.BAD_REQUEST.value());
 		}
         return feedInfoRes;
     }
-    
-//    public List<FeedbackData> showFeedbackforUser(String email) {
-//        Users user = userService.findUsers(email);
-//        long userId = user.getUserId();
-//        System.out.println("User Id: " + userId);
-//        List<GroupDataRequest> groupObj = groupService.findGroup(userId);
-//        FeedbackComent comment = new FeedbackComent();
-//        ArrayList<FeedbackData> list = new ArrayList<>();
-//        List<String>listObj=new ArrayList<>();
-//        
-//        for (GroupDataRequest g : groupObj) {
-//            //    		System.out.println("GroupId is: "+g.getGroupId());
-//            List<FeedbackPayload> feedObj = feedRepo.showFeedback(g.getGroupId());
-//            Iterator<FeedbackPayload> itr = feedObj.iterator();
-//            while (itr.hasNext()) {
-//                FeedbackPayload obj = itr.next();
-//                System.out.println("--------Feedback Id:--------" + obj.getId());
-//                FeedbackData feedback = new FeedbackData();
-//                List<FeedbackComent> commentObj = feedComentRepo.findByfeedbackId(obj.getId());
-//                if (!commentObj.isEmpty()) {
-//                	for(FeedbackComent fcObj:commentObj) {
-//                   // FeedbackComent comObj = commentObj.get(fcObj);
-//                		listObj.add(fcObj.getComent());
-//                	}
-//                	
-//                	feedback.setComment(listObj);
-//                }
-//                Users getUser = userService.findUsers(obj.getFeedbackGivenBy());
-//                feedback.setFeedback(obj.getFeedbackinfo());
-//                feedback.setFeedbackSender(obj.getFeedbackGivenBy());
-//                feedback.setDateAndtime(obj.getCreatedOn());
-//                feedback.setFeedbackSenderName(getUser.getUserName());
-//                list.add(feedback);
-//            }
-//        }
-//        return list;
-//    }
-//    
+
     public ArrayList<FeedbackData> showFeedbackForadmin(int appId) {
         List<Feedback> list = feedRepo.showFeedbackForAdmin(appId);
         ArrayList<FeedbackData> listObj = new ArrayList<>();
