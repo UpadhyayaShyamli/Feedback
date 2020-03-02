@@ -47,9 +47,9 @@ public class AppController {
 
     @GetMapping("/getApp")
     public ResponseEntity<?> getAllApp() {
-        if (appService.getAllApp().isEmpty()) {
-            return ResponseEntity.ok("No Application found");
-        }
+//        if (appService.getAllApp().isEmpty()) {
+//            return ResponseEntity.ok("No Application found");
+//        }
         return ResponseEntity.ok(appService.getAllApp());
     }
     

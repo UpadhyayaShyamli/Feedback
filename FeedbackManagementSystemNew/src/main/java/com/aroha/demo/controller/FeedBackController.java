@@ -87,7 +87,7 @@ public class FeedBackController {
     }
 	
 	
-	@GetMapping("/showComent")
+	@PostMapping("/showComent")
 	public ResponseEntity<?>getComent(@RequestParam("feedbackId")int feedbackId)
 	{
 		return ResponseEntity.ok(feedService.getComent(feedbackId));

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.aroha.demo.model.Application;
 import com.aroha.demo.payload.AppPayload;
 import com.aroha.demo.payload.AppUserPayload;
+import com.aroha.demo.payload.GetAllAppData;
 import com.aroha.demo.repository.ApplicationRepository;
 
 @Service
@@ -40,8 +41,12 @@ public class AppService {
         return appObj;
     }
 
-    public List<Application> getAllApp() {
-        return appRepo.findAll();
+    public GetAllAppData getAllApp() {
+    	
+       List<Application>app = appRepo.findAll();
+       GetAllAppData getData = new GetAllAppData();
+       getData.setApp(app);
+       return getData;
     }
 
     public boolean checkAppId(int appId) {
