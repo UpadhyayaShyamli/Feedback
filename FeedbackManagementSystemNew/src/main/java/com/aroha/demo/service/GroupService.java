@@ -8,10 +8,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.aroha.demo.model.Application;
 import com.aroha.demo.model.Group;
 import com.aroha.demo.payload.CreateGroup;
+import com.aroha.demo.payload.GetAllGroupData;
+import com.aroha.demo.payload.GetOnlyGroupData;
+import com.aroha.demo.payload.GetOnlyGroupDataResponse;
 import com.aroha.demo.payload.GroupDataRequest;
 import com.aroha.demo.payload.GroupPayload;
 import com.aroha.demo.payload.UserGroupResponse;
@@ -60,8 +64,56 @@ public class GroupService {
         return cgObj;
     }
 
-    public List<Group> getAllGroup() {
-        return groupRepo.findAll();
+    public GetAllGroupData getAllGroup() {
+    	GetAllGroupData gd = new GetAllGroupData();
+    	List<Group>groupList = groupRepo.findAll();
+    	if(groupList.size()>0)
+    	{
+    		gd.setStatus(true);
+    		gd.setStatusCode(HttpStatus.OK.value());
+    		gd.setStatusmessage("Group Fetched Successfully");
+    		gd.setData(groupList);
+    	}
+    	else
+    	{
+    		gd.setStatus(false);
+    		gd.setStatusCode(HttpStatus.OK.value());
+    		gd.setStatusmessage("Group dosent exist");
+    		gd.setData(groupList);
+    	}
+    	
+    	return gd;    
+    }
+    
+    public GetOnlyGroupDataResponse getOnlyGroup() {
+    	
+    	GetOnlyGroupDataResponse gdRes = new GetOnlyGroupDataResponse();
+    	List<Group>groupList = groupRepo.findAll();
+    	ArrayList<GetOnlyGroupData>gdList= new ArrayList<>();
+    	if(groupList.size()>0)
+    	{
+    		for(Group group:groupList)
+    		{
+    			GetOnlyGroupData gd = new GetOnlyGroupData();
+    			gd.setGroupId(group.getGroupId());
+    			gd.setGroupName(group.getGroupName());
+    			gd.setCreatedOn(group.getCreatedOn());
+    			gdList.add(gd);
+    		}
+    		gdRes.setStatus(true);
+    		gdRes.setStatusCode(HttpStatus.OK.value());
+    		gdRes.setStatusMessage("Group Fetched Successfully");
+    		gdRes.setData(gdList);
+    	}
+    	else
+    	{
+    		gdRes.setStatus(false);
+    		gdRes.setStatusCode(HttpStatus.OK.value());
+    		gdRes.setStatusMessage("Group dosent exist");
+    		gdRes.setData(gdList);
+    	}
+    	
+    	return gdRes;    
     }
 
     public List<GroupPayload> showGroupbyAppId(int appId) {

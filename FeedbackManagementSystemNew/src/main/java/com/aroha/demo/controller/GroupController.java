@@ -30,12 +30,14 @@ public class GroupController {
         return ResponseEntity.ok(group);
     }
 
+    @GetMapping("/showAllGroupwithApp")
+    public ResponseEntity<?> getAllGroupwithApplication() {
+        return ResponseEntity.ok(groupService.getAllGroup());
+    }
+    
     @GetMapping("/showAllGroup")
     public ResponseEntity<?> getAllGroup() {
-        if (groupService.getAllGroup().isEmpty()) {
-            return ResponseEntity.ok("No group found");
-        }
-        return ResponseEntity.ok(groupService.getAllGroup());
+        return ResponseEntity.ok(groupService.getOnlyGroup());
     }
 
     @PostMapping("/showGroup")
